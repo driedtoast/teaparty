@@ -1,0 +1,23 @@
+
+h1. Overview
+
+The following project is to manage a cloud based infrastructure for multiple providers. The intent is to grow the project into a general administration tool.
+
+It relies on the following projects:
+
+* Django - http://docs.djangoproject.com/en/dev/topics/install/#installing-official-release
+** Used for the web framework
+* Boto - http://boto.googlecode.com/files/boto-1.9b.tar.gz
+** Used for interacting with amazon aws services
+h2. Installing
+
+Setup the following directory:
+* /opt/teaparty - used to store the db
+* cd teaparty
+* python manage.py syncdb
+
+h2. Starting server
+
+To start the server do the following:
+* cd teaparty
+* python manage.py runserver
