@@ -35,6 +35,16 @@ PYTHON_CMD=`which python`
 ## with the configs in config directory
 updateconfig() {
 
+   ## create a data directory just in case
+   if [ ! -d "$TEAPARTY_HOME/data" ]; then
+	mkdir -p "$TEAPARTY_HOME/data"
+   fi
+   
+   ## create a static directory just in case
+   if [ ! -d "$TEAPARTY_HOME/static" ]; then
+        mkdir -p "$TEAPARTY_HOME/static"
+   fi
+   
    ## create a work directory just in case
    if [ ! -d "$TEAPARTY_HOME/work" ]; then
 	mkdir -p "$TEAPARTY_HOME/work"
