@@ -3,6 +3,15 @@ h1. Overview
 
 The following project is to manage a cloud based infrastructure for multiple providers. The intent is to grow the project into a general administration tool.
 
+The project's layout is as follows:
+* config/ - directory containing the configuration for the application
+* teaparty/ - application files and scripts
+* teaparty/startup - startup scripts
+* static/ - images, css, etc...
+* teaparty/templates - template files for the screens
+* teapartysvr - startup and server script
+* setup.sh - handy script to install django and boto
+
 It relies on the following projects:
 
 * Django - http://docs.djangoproject.com/en/dev/topics/install/#installing-official-release
@@ -11,7 +20,7 @@ It relies on the following projects:
 ** Used for interacting with amazon aws services
 h2. Installing
 
-Setup the following directory:
+Setup the following directory, this will be done in the startup script:
 * /opt/teaparty - used to store the db
 * cd teaparty
 * python manage.py syncdb
@@ -21,3 +30,13 @@ h2. Starting server
 To start the server do the following:
 * cd teaparty
 * python manage.py runserver
+
+This will move to teapartysvr start instead.
+
+
+h2. Initializing data
+
+Put json files within the config directory which will initialize the data for the given application
+Also setup the properties to properly configure the files
+
+TODO more detail on configuration files

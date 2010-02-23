@@ -1,0 +1,112 @@
+#!/bin/sh
+
+##########################################
+##  Script to startup the teaparty server
+## 
+##########################################
+
+
+BASEDIR=`dirname $0`
+echo "Starting script from $BASEDIR"
+
+## setup the teaparty home directory
+if [ ! -n "$TEAPARTY_HOME" ]; then
+   export TEAPARTY_HOME=$BASEDIR
+fi
+
+## where to get the configuration files from
+TEAPARTY_CONFIG_DIR=$TEAPARTY_HOME/config
+
+if [ -f "/etc/rc.d/init.d/functions" ]; then
+   . /etc/rc.d/init.d/functions
+fi
+
+# Get config.
+if [ -f "/etc/sysconfig/network" ]; then
+   . /etc/sysconfig/network
+fi
+
+PYTHON_CMD=`which python`
+
+# Check that networking is up.
+[ "${NETWORKING}" = "no" ] && exit 0
+
+## Updates the django configurations 
+## with the configs in config directory
+updateconfig() {
+
+   ## create a work directory just in case
+   if [ ! -d "$TEAPARTY_HOME/work" ]; then
+	mkdir -p "$TEAPARTY_HOME/work"
+   fi
+		
+   echo "Updating configuration"	
+   if [ -f "$TEAPARTY_HOME/teaparty/settings.py.bak" ]; then
+	mv "$TEAPARTY_HOME/teaparty/settings.py.bak" "$TEAPARTY_HOME/teaparty/settings.py"
+   fi   
+   ## backup file
+   cp "$TEAPARTY_HOME/teaparty/settings.py" "$TEAPARTY_HOME/teaparty/settings.py.bak"	
+   echo " Backing up django settings.py to $TEAPARTY_HOME/teaparty/settings.py.bak"
+   
+   ## put in working directory
+   cp "$TEAPARTY_HOME/teaparty/settings.py" "$TEAPARTY_HOME/work/settings.py"	
+   
+   $PYTHON_CMD $TEAPARTY_HOME/teaparty/startup/updateconfig.py $TEAPARTY_HOME/config/general.config "$TEAPARTY_HOME/work/settings.py"
+   mv $TEAPARTY_HOME/work/settings.py $TEAPARTY_HOME/teaparty/settings.py
+   rm -Rf $TEAPARTY_HOME/work
+
+}
+
+## starts up the server
+start(){
+  echo -n $"Starting Teaparty server: "
+  if [ ! -d "$TEAPARTY_HOME/data" ]; then
+	echo "Making data dir"
+	mkdir -p "$TEAPARTY_HOME/data"
+  fi
+	
+  updateconfig 
+	 
+  #daemon -c 
+  ## Sync DB
+  $PYTHON_CMD $TEAPARTY_HOME/teaparty/manage.py syncdb
+  RETVAL=$?
+  echo
+	
+  ## start db
+  $PYTHON_CMD $TEAPARTY_HOME/teaparty/manage.py runserver
+  RETVAL=$?
+  echo
+}
+
+## stops the server
+stop(){
+  echo -n $"Stopping Tomcat service: " 
+  ## shutdown?
+  ## RETVAL=$?
+  ## echo
+}
+
+restart(){
+    stop
+    start
+}
+
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart)
+	restart
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit 0
