@@ -8,6 +8,7 @@ The project's layout is as follows:
 * teaparty/ - application files and scripts
 * teaparty/startup - startup scripts
 * static/ - images, css, etc...
+* data/ - database directory for sqllite
 * teaparty/templates - template files for the screens
 * teapartysvr - startup and server script
 * setup.sh - handy script to install django and boto
@@ -18,21 +19,26 @@ It relies on the following projects:
 ** Used for the web framework
 * Boto - http://boto.googlecode.com/files/boto-1.9b.tar.gz
 ** Used for interacting with amazon aws services
+
+You can install the above with the setup.sh script.
+
 h2. Installing
 
-Setup the following directory, this will be done in the startup script:
-* /opt/teaparty - used to store the db
-* cd teaparty
-* python manage.py syncdb
+Untar, assuming this will result in a tar
+Or git clone
+
+Update any configuration under config/general.config
+
+Install Django and Boto using setup.sh
+
+That's it your are up and running
 
 h2. Starting server
 
 To start the server do the following:
-* cd teaparty
-* python manage.py runserver
+* ./teapartysvr start
 
-This will move to teapartysvr start instead.
-
+This starts up the server and does some initialization of db on first start.
 
 h2. Initializing data
 
