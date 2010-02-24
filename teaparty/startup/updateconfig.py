@@ -48,7 +48,7 @@ def configMap(config):
    	map['@DATABASE_USER@'] = config['db']['user']
    	map['@DATABASE_PASSWORD@'] = config['db']['password']
    map['@SECRET_KEY@']=config['server']['secret_key']
-   mediaurl = 'http://'+config['server']['host']+':'+config['server']['port']+'/static/'
+   mediaurl = 'http://'+config['server']['hostname']+':'+config['server']['port']+'/static/'
    map['@MEDIA_URL@']=mediaurl
    return map 
 
