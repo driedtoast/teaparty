@@ -1,0 +1,10 @@
+{% if accounts %}
+    <ul>
+    {% for account in accounts %}
+        <li><a href="/teaparty/accounts/{{ account.id }}/">{{ account.account }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No accounts available <a href="/teaparty/accounts/new" >add account</a>.</p>
+{% endif %}
+

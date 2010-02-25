@@ -6,7 +6,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
-    (r'^teaparty/', include('teaparty.main.urls')),
+    (r'^teaparty/$', include('teaparty.main.urls')),
+    ('handler404', 'teaparty.common.views.notfound'),
+    ('handler500', 'teaparty.common.views.servererror'),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

@@ -80,4 +80,5 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'teaparty.providers',
     'teaparty.main',
+    'teaparty.common',
 )
