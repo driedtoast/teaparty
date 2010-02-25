@@ -1,8 +1,8 @@
 from django.conf.urls.defaults import *
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns('teaparty.main',
     # Example:
-    (r'^$', 'teaparty.main.views.index'),
-    (r'^accounts/$', 'teaparty.main.accounts.index'),
+    (r'^$', 'views.index'),
+    (r'^accounts/$', 'accounts.index'),
 )
