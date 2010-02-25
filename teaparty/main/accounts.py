@@ -27,3 +27,9 @@ def detail(request, account_id):
         raise Http404
     return render_to_response('main/accounts/detail.html', {'account': account})
 
+######################
+## Gets a detail of the account
+######################
+def create(request):
+    return render_to_response('main/accounts/detail.html', {})
+
