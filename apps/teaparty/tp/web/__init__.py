@@ -1,6 +1,7 @@
 from bottle import route, run, abort, debug
 from bottle import mako_view as view
 from bottle import send_file, redirect
+from bottle import PasteServer
 import bottle
 import os, sys
 import tp.utilize as utilize
@@ -9,16 +10,16 @@ cfg = None
 
 
 @route('/static/js/:filename')
-def static_file(filename):
+def static_file_js(filename):
     	send_file(filename, root=utilize.staticdir+'/js')
 
 @route('/static/css/:dir/images/:filename')
-def static_file(filename):
+def static_file_css_images(dir,filename):
     	send_file(filename, root=utilize.staticdir+'/css/'+dir+'/images')
 
 @route('/static/css/:dir/:filename')
-def static_file(filename):
-    	send_file(filename, root=utilize.staticdir+'/css/'+dir)
+def static_file_cc(dir,filename):
+	send_file(filename, root=utilize.staticdir+'/css/'+dir)
 	
 
 
@@ -39,5 +40,6 @@ def startweb(host,port):
 	print os.path.dirname( os.path.realpath( __file__ ) )
 	print "sys.path[0]:   %s" % sys.path[0]
 	bottle.TEMPLATE_PATH.insert(0,os.path.dirname( os.path.realpath( __file__ ))+'/views/')
-	run(host=host, port=port)
+	run(server=PasteServer,host=host, port=port)
+
 
