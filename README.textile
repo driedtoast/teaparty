@@ -4,32 +4,32 @@ h1. Overview
 The following project is to manage a cloud based infrastructure for multiple providers. The intent is to grow the project into a general administration tool.
 
 The project's layout is as follows:
-* config/ - directory containing the configuration for the application
-* teaparty/ - application files and scripts
-* teaparty/startup - startup scripts
+* conf/ - directory containing the configuration for the application
+* apps/teaparty/ - application files and scripts
+* startup.py - startup script
 * static/ - images, css, etc...
 * data/ - database directory for sqllite
-* teaparty/templates - template files for the screens
+* apps/teaparty/templates - template files for the screens
 * teapartysvr - startup and server script
-* setup.sh - handy script to install django and boto
 
-It relies on the following projects:
+It uses on the following projects:
 
-* Django - http://docs.djangoproject.com/en/dev/topics/install/#installing-official-release
-** Used for the web framework
+* "pytoaster":http://github.com/driedtoast/pytoaster
+** Used for the base of the project
+* "bottle":http://bottle.paws.de/
+** Used for web framework
+* "sqlalchemy":http://www.sqlalchemy.org/
+** ORM lib
 * Boto - http://boto.googlecode.com/files/boto-1.9b.tar.gz
 ** Used for interacting with amazon aws services
 
-You can install the above with the setup.sh script.
 
 h2. Installing
 
 Untar, assuming this will result in a tar
 Or git clone
 
-Update any configuration under config/general.config
-
-Install Django and Boto using setup.sh
+Run ./bin/pytoaster resolve
 
 That's it your are up and running
 
