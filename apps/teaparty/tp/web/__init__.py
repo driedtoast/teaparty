@@ -3,7 +3,7 @@ from bottle import mako_view as view
 from bottle import send_file, redirect
 from bottle import PasteServer
 import bottle
-import os, sys
+import os, sys,  traceback
 import tp.utilize as utilize
 
 cfg = None
@@ -20,9 +20,6 @@ def static_file_css_images(dir,filename):
 @route('/static/css/:dir/:filename')
 def static_file_cc(dir,filename):
 	send_file(filename, root=utilize.staticdir+'/css/'+dir)
-	
-
-
 
 
 @route('/')
