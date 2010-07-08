@@ -1,4 +1,36 @@
-import sqlalchemy
+import sqlalchemy as sa
+from sqlalchemy import MetaData
+import sqlalchemy.orm as orm
+import tp.models as models
+import tp.utilize as utilize
+
+initialized = False
+engine = None
+sm = None
+cfg = None
+
+# Global metadata. If you have multiple databases with overlapping table 
+# names, you'll need a metadata for each database.
+metadata = MetaData()
+
+table_amis = sa.Table('amazon_images', metadata,
+	sa.Column('amazon_id', sa.types.Text, primary_key=True),
+	sa.Column('simple_name', sa.types.Text, nullable=False),
+	sa.Column('added', sa.types.DateTime, nullable=False))
+
+def initdb():
+	global engine, sm, initialized
+	if(initialized == False):
+		engine = orm.create_engine('sqlite://'+utilize.datadir +'/teaparty.sqlite')
+		sm = orm.sessionmaker(autoflush=True, autocommit=True, bind=engine)
+		orm.mapper(models.AmazonImage, table_amis)
+		metadata.create_all(engine)
+		initialized = True
+
+def session():
+	session = orm.scoped_session(sm)
+	return session
+
 
 def check():
-	return sqlalchemy.__version__
+	return sa.__version__

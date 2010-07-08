@@ -51,6 +51,15 @@ def amidetails(accountname,amiid):
 	account = utilize.account(accountname)
 	ami = aws.ami(account,amiid)
 	return dict(name='ami details', account=account, ami=ami)
+
+### ami image list
+@route('/amis/:accountname')
+@view('amis')
+def amilist(accountname):
+	account = utilize.account(accountname)
+	amis = aws.amis(account)
+	return dict(name='ami list', account=account, amis=amis)
+
 	
 ### start instance
 @route('/startinstance/:accountname')
