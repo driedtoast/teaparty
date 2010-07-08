@@ -5,6 +5,7 @@ from bottle import PasteServer
 import bottle
 import os, sys,  traceback
 import tp.utilize as utilize
+import tp.aws as aws
 
 cfg = None
 
@@ -21,12 +22,43 @@ def static_file_css_images(dir,filename):
 def static_file_cc(dir,filename):
 	send_file(filename, root=utilize.staticdir+'/css/'+dir)
 
-
+### dashboard
 @route('/')
-@view('hello')
+@view('dashboard')
 def index():
-	dirname = os.path.dirname( os.path.realpath( __file__ ) )
-        return dict(name='Hello World', dir=dirname)
+	accountdata = utilize.accountdata()
+	accounts = []
+	if( accountdata != None):
+		## add account info
+		accounts = accountdata.accounts
+	return dict(name='dashboard', accounts=accounts)
+
+### account instances
+@route('/account/:accountname')
+@view('account_instances')
+def accountinstances(accountname):
+	account = utilize.account(accountname)
+	instances = []
+	if( account != None):
+		## add account info
+		instances = aws.instances(account)
+        return dict(name='account instances', account=account, instances=instances)
+
+### ami image detail
+@route('/ami/:accountname/:amiid')
+@view('ami_details')
+def amidetails(accountname,amiid):
+	account = utilize.account(accountname)
+	ami = aws.ami(account,amiid)
+	return dict(name='ami details', account=account, ami=ami)
+	
+### start instance
+@route('/startinstance/:accountname')
+@view('start_instance')
+def startinstance(accountname):
+	account = utilize.account(accountname)
+	## TODO get the details
+	return dict(name='start instance', account=account)
 
 
 ########################
@@ -34,8 +66,6 @@ def index():
 ## application
 #######################
 def startweb(host,port):
-	print os.path.dirname( os.path.realpath( __file__ ) )
-	print "sys.path[0]:   %s" % sys.path[0]
 	bottle.TEMPLATE_PATH.insert(0,os.path.dirname( os.path.realpath( __file__ ))+'/views/')
 	run(server=PasteServer,host=host, port=port)
 
