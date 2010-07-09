@@ -1,9 +1,13 @@
 import boto
 
 
+def ec2conn(account):
+    conn = boto.connect_ec2(account.access_key,account.secret_key)
+    return conn
+
 ## gets all instances for an account
 def instances(account):
-    conn = boto.connect_ec2(account.access_key,account.secret_key)
+    conn = ec2conn(account)
     instancesarr = []
     instances = conn.get_all_instances()
     for reservation in instances:
@@ -13,10 +17,13 @@ def instances(account):
     
 ## gets detail on an ami
 def ami(account,amiid):
-    conn = boto.connect_ec2(account.access_key,account.secret_key)
+    conn = ec2conn(account)
     images = conn.get_all_images(image_ids=[amiid])
     for image in images:
         return image
     return image
-        
-# images = conn.get_all_images()
+
+## gets all amis
+def ams(account):
+    conn = boto.connect_ec2(account.access_key,account.secret_key)
+    return conn.get_all_images()   
