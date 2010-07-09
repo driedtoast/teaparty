@@ -24,6 +24,6 @@ def ami(account,amiid):
     return image
 
 ## gets all amis
-def ams(account):
+def amis(account):
     conn = boto.connect_ec2(account.access_key,account.secret_key)
     return conn.get_all_images()   
