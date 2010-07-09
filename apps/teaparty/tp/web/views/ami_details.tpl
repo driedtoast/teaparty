@@ -7,6 +7,7 @@
 <p>name: ${ami.name}</p>
 <p>description: ${ami.description}</p>
 <p>location: ${ami.location}</p>
+<p>owner id: ${ami.ownerId}</p>
 
 
     
