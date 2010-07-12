@@ -2,10 +2,13 @@ from bottle import route, run, abort, debug
 from bottle import mako_view as view
 from bottle import send_file, redirect
 from bottle import PasteServer
+from bottle import request, response
 import bottle
 import os, sys,  traceback
 import tp.utilize as utilize
 import tp.aws as aws
+import tp.services as services
+import tp.models as models
 
 cfg = None
 
@@ -66,7 +69,31 @@ def accountinstances(accountname):
 def amidetails(accountname,amiid):
 	account = utilize.account(accountname)
 	ami = aws.ami(account,amiid)
-	return dict(name='ami details', account=account, ami=ami)
+	service = services.ImageService()
+	awsimage = service.get(amiid);
+	return dict(name='ami details', account=account, ami=ami,image=awsimage)
+	
+
+### ami image detail
+@route('/ami/:accountname/:amiid/save',method='POST')
+@view('ami_details')
+def amidetails_save(accountname,amiid):
+	simple_name = None
+	awsimage = None
+	try:
+		if 'simple_name' in request.POST:
+			simple_name = request.POST['simple_name']
+		service = services.ImageService()
+		awsimage = models.AmazonImage(amiid,simple_name)
+		service.save(awsimage);
+	except Exception, e:
+		print e
+		traceback.print_exc()
+	## model data
+	account = utilize.account(accountname)
+	ami = aws.ami(account,amiid)
+	return dict(name='ami details', account=account, ami=ami, image=awsimage)
+
 
 ### ami image list
 @route('/amis/:accountname')
