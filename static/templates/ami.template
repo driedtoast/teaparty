@@ -1,0 +1,4 @@
+<div class="listing">
+  <div class="listing-id"><%= obj.id %></div>
+  <div class="listing-name"><%= obj.name %></div>
+</div>
