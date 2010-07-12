@@ -19,16 +19,20 @@ table_amis = sa.Table('amazon_images', metadata,
 	sa.Column('added', sa.types.DateTime, nullable=False))
 
 def initdb():
-	global engine, sm, initialized
+	global engine, sm, initialized, table_amis, metadata
 	if(initialized == False):
-		engine = orm.create_engine('sqlite://'+utilize.datadir +'/teaparty.sqlite')
+		utilize.setupdata()		
+		dburl = 'sqlite:///'+utilize.datadir +'/teaparty.sqlite'
+		engine = sa.create_engine(dburl)
+		print( ' engine is ' + str(engine) )
+		metadata.create_all(engine)
 		sm = orm.sessionmaker(autoflush=True, autocommit=True, bind=engine)
 		orm.mapper(models.AmazonImage, table_amis)
-		metadata.create_all(engine)
 		initialized = True
 
 def session():
-	session = orm.scoped_session(sm)
+	session = sm()
+	## session = orm.scoped_session(sm)
 	return session
 
 
