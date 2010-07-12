@@ -10,6 +10,21 @@
 <p>owner id: ${ami.ownerId}</p>
 
 
+
+
+<form action="/ami/${account.name}/${ami.id}/save" method="POST">
+
+<p>simple name of ami: <input name="simple_name" type="text" size="50"  value="
+% if image :
+${image.simple_name}
+% endif
+"/></p>
+<p><input type="submit" value="save" /></p>
+</form>
+
+
+
+
 <a href="#/api/amis/${account.name}" id="amilist_link" >get ami list</a>
    
    <div id="ajaxmain">
