@@ -10,9 +10,21 @@ import tp.aws as aws
 cfg = None
 
 
+##############################################################
+### static file methods
+############################################################
+
 @route('/static/js/:filename')
 def static_file_js(filename):
     	send_file(filename, root=utilize.staticdir+'/js')
+
+@route('/static/js/plugins/:filename')
+def static_file_js_plugins(filename):
+    	send_file(filename, root=utilize.staticdir+'/js/plugins')
+
+@route('/static/templates/:filename')
+def static_file_template(filename):
+    	send_file(filename, root=utilize.staticdir+'/templates')
 
 @route('/static/css/:dir/images/:filename')
 def static_file_css_images(dir,filename):
@@ -21,6 +33,10 @@ def static_file_css_images(dir,filename):
 @route('/static/css/:dir/:filename')
 def static_file_cc(dir,filename):
 	send_file(filename, root=utilize.staticdir+'/css/'+dir)
+
+##############################################################
+### UI methods
+############################################################
 
 ### dashboard
 @route('/')
@@ -60,7 +76,6 @@ def amilist(accountname):
 	amis = aws.amis(account)
 	return dict(name='ami list', account=account, amis=amis)
 
-	
 ### start instance
 @route('/startinstance/:accountname')
 @view('start_instance')
@@ -68,6 +83,25 @@ def startinstance(accountname):
 	account = utilize.account(accountname)
 	## TODO get the details
 	return dict(name='start instance', account=account)
+
+
+##############################################################
+### API methods
+############################################################
+
+### api ami image list
+@route('/api/amis/:accountname')
+@view('api/amis')
+def api_amilist(accountname):
+	account = utilize.account(accountname)
+	amis = aws.amis(account)
+	return dict(name='ami list', account=account, amis=amis)
+
+
+
+
+
+
 
 
 ########################
