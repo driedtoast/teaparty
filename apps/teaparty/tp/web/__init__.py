@@ -68,31 +68,29 @@ def accountinstances(accountname):
 @view('ami_details')
 def amidetails(accountname,amiid):
 	account = utilize.account(accountname)
-	ami = aws.ami(account,amiid)
 	service = services.ImageService()
-	awsimage = service.get(amiid);
-	return dict(name='ami details', account=account, ami=ami,image=awsimage)
+	awsimage = service.get(accountname,amiid);
+	return dict(name='ami details', account=account, ami=awsimage.awsami,image=awsimage)
 	
 
 ### ami image detail
 @route('/ami/:accountname/:amiid/save',method='POST')
 @view('ami_details')
 def amidetails_save(accountname,amiid):
-	simple_name = None
-	awsimage = None
+	account = utilize.account(accountname)
+	service = services.ImageService()
 	try:
+		simple_name = None
 		if 'simple_name' in request.POST:
 			simple_name = request.POST['simple_name']
-		service = services.ImageService()
 		awsimage = models.AmazonImage(amiid,simple_name)
 		service.save(awsimage);
 	except Exception, e:
 		print e
 		traceback.print_exc()
 	## model data
-	account = utilize.account(accountname)
-	ami = aws.ami(account,amiid)
-	return dict(name='ami details', account=account, ami=ami, image=awsimage)
+	awsimage = service.get(accountname,amiid);
+	return dict(name='ami details', account=account, ami=awsimage.awsami, image=awsimage)
 
 
 ### ami image list
@@ -102,6 +100,14 @@ def amilist(accountname):
 	account = utilize.account(accountname)
 	amis = aws.amis(account)
 	return dict(name='ami list', account=account, amis=amis)
+
+### ami image list
+@route('/jobs/flows')
+@view('jobflows')
+def jobflowlist():
+	jobservice = services.JobsService()
+	flowlist = jobservice.list()
+	return dict(name='job flow list', flows=flowlist)
 
 ### start instance
 @route('/startinstance/:accountname')
