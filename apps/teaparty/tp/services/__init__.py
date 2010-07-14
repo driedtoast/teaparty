@@ -18,6 +18,9 @@ class BaseService(object):
         session = db.session()
         session.add(obj)
         session.flush()
+    def get_account(self,accountname):
+        return utilize.account(accountname)
+        
 
 
 ### Class to manage the ami images
@@ -29,7 +32,7 @@ class ImageService(BaseService):
         self._save(amazonImage)
         
     def get(self,accountname, amiid):
-        account = utilize.account(accountname)
+        account = self.get_account(accountname)
         ami = aws.ami(account,amiid)
         amiimage = None 
         try:
