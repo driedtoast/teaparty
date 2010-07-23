@@ -15,6 +15,14 @@
                 <p>instance state: ${instance.state}</p>
                 <p>instance_type: ${instance.instance_type}</p>
                 <p>internal dns: ${instance.private_dns_name}</p>
+		<p>availability zone: ${instance.placement} </p>
+		<p>groups:
+			<ul>
+			% for group in instance.groups:
+				<li>${group}</li>
+			% endfor
+			</ul>
+		</p>
                 <p>image id: <a href="/ami/${account.name}/${instance.image_id}">${instance.image_id}</a></p>
                 
 	</div>
@@ -32,6 +40,14 @@
                 <p>instance state: ${instance.state}</p>
                 <p>instance_type: ${instance.instance_type}</p>
                 <p>internal dns: ${instance.private_dns_name}</p>
+		<p>availability zone: ${instance.placement} </p>
+		<p>groups:
+			<ul>
+			% for group in instance.groups:
+				<li>${group}</li>
+			% endfor
+			</ul>
+		</p>
                 <p>image id: <a href="/ami/${account.name}/${instance.image_id}">${instance.image_id}</a></p>
                 
 	</div>
