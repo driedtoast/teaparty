@@ -12,4 +12,9 @@ class AmazonImage(object):
         self.amazon_id = amazon_id
         self.simple_name = simple_name
         self.added = date.today()
+
+### defines an application stereo type    
+class AppStereoType(object):
     
+    def __init__(self, name):
+        self.name = name
