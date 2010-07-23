@@ -11,8 +11,10 @@ def instances(account):
     instancesarr = []
     instances = conn.get_all_instances()
     for reservation in instances:
-        for instance in reservation.instances:
-            instancesarr.append(instance)
+        for inst in reservation.instances:
+            instancesarr.append(inst)
+            inst.groups = reservation.groups
+            ## print inst.get_console_output()
     return instancesarr
     
 ## gets detail on an ami
