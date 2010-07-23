@@ -28,12 +28,12 @@ class ImageService(BaseService):
     def __init__(self):
         self.setup()
     
+    ## saves db object to db
     def save(self,amazonImage):
         self._save(amazonImage)
         
-    def get(self,accountname, amiid):
-        account = self.get_account(accountname)
-        ami = aws.ami(account,amiid)
+    ## gets just the db object
+    def getdbami(self,amid):
         amiimage = None 
         try:
             session = self.session()
@@ -41,9 +41,14 @@ class ImageService(BaseService):
         except Exception, e:
             pass
         if (amiimage == None):
-            amiimage = models.AmazonImage(ami.id,'unknown')
-        amiimage.awsami = ami
+            amiimage = models.AmazonImage(amiid,'unknown')
+        return amiimage
         
+    def get(self,accountname, amiid):
+        account = self.get_account(accountname)
+        ami = aws.ami(account,amiid)
+        amiimage = self.getdbami(amiid)
+        amiimage.awsami = ami
         return amiimage
 
 
