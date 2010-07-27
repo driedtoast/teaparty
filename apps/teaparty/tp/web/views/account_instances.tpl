@@ -12,6 +12,7 @@
 	<h3><a href="/instance/${instance.id}">(${instance.id}) ${instance.public_dns_name}</a></h3>
 	<div>
 		<p>instance id: ${instance.id}</p>
+		<p>external dns: ${instance.public_dns_name}</p>
                 <p>instance state: ${instance.state}</p>
                 <p>instance_type: ${instance.instance_type}</p>
                 <p>internal dns: ${instance.private_dns_name}</p>
