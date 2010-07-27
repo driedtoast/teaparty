@@ -6,7 +6,11 @@ class AllTests(unittest.TestSuite):
 	def __init__(self):
 		super(AllTests,self).__init__()
 		self.addTest(DbTest())
-		self.addTest(tptests.services.ImageServiceTest())
+		self.addTest(tptests.services.ImageServiceTest('test_amiunknown'))
+		self.addTest(tptests.services.StorageServiceTest())
+		self.addTest(tptests.services.DatabaseServiceTest('test_simpledbs'))
+		self.addTest(tptests.services.DatabaseServiceTest('test_copy'))
+		
 		pass
 
 
@@ -17,6 +21,7 @@ class DbTest(unittest.TestCase):
 		db.initdb()
 	
 	def runTest(self):
+		self.test_session()
 		pass
 	
 	def test_session(self):
