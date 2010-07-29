@@ -7,7 +7,8 @@ class AllTests(unittest.TestSuite):
 		super(AllTests,self).__init__()
 		self.addTest(DbTest())
 		self.addTest(tptests.services.ImageServiceTest('test_amiunknown'))
-		self.addTest(tptests.services.StorageServiceTest())
+		self.addTest(tptests.services.StorageServiceTest('test_acl'))
+		self.addTest(tptests.services.StorageServiceTest('test_buckets'))
 		self.addTest(tptests.services.DatabaseServiceTest('test_simpledbs'))
 		self.addTest(tptests.services.DatabaseServiceTest('test_copy'))
 		

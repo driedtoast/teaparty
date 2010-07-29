@@ -22,7 +22,17 @@ class StorageServiceTest(BaseTest):
     
     ## test bucket list
     def test_buckets(self):
+	
 	pass
+    
+    ## test bucket list
+    def test_acl(self):
+	accountname = self.testcfg.get('accounts')['acltest1']
+	bucketname = self.testcfg.get('buckets')['aclbucket']
+	service = services.StorageService()
+	service.change_bucket_visibility(accountname,bucketname,recursive=True)
+	pass
+    
     
     
     def runTest(self):
