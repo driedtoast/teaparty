@@ -39,6 +39,13 @@ def buckets(account):
     rs = conn.get_all_buckets()
     return rs
 
+## gets a bucket
+def bucket(account, bucketname):
+    conn = boto.connect_s3(account.access_key,account.secret_key)
+    b = conn.get_bucket(bucketname)
+    return b
+
+
 ## get all domains
 def simpledbs(account):
     conn = boto.connect_sdb(account.access_key,account.secret_key)

@@ -61,6 +61,18 @@ class StorageService(BaseService):
         account = self.get_account(accountname)
         ## todo more stuff
         return aws.buckets(account)
+    
+    ## change the bucket visibility
+    def change_bucket_visibility(self,accountname, bucketname, recursive=False,type='public'):
+        scope = 'public-read'
+        account = self.get_account(accountname)
+        b = aws.bucket(account,bucketname)
+        b.set_acl(scope)
+        if(recursive):
+            rs = b.list()
+            for key in rs:
+                key.set_acl(scope)  
+
 
 ### Class to manage the database stores
 class DatabaseService(BaseService):
