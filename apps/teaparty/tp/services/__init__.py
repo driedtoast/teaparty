@@ -57,6 +57,13 @@ class StorageService(BaseService):
         self.setup()
     
     ## gets just the db object
+    def get_storage_container(self,accountname, bucketname, create=False):
+        account = self.get_account(accountname)
+        bucket = aws.bucket(account,bucketname,create)
+        return bucket
+    
+    
+    ## gets just the db object
     def get_storage_containers(self,accountname):
         account = self.get_account(accountname)
         ## todo more stuff
@@ -71,7 +78,38 @@ class StorageService(BaseService):
         if(recursive):
             rs = b.list()
             for key in rs:
-                key.set_acl(scope)  
+                key.set_acl(scope)
+                
+    ## Copies data from one bucket to another            
+    def copy_bucket(self,from_accountname, from_bucket, to_accountname, to_bucket=None,override=False):
+        fromaccount = self.get_account(from_accountname)
+        toaccount = self.get_account(to_accountname)
+        frombucket = aws.bucket(account,from_bucket)
+        tobucket = aws.bucket(toaccount,to_bucket,True)
+        rs = frombucket.list()
+        for key in rs:
+                name = key.name
+                filename = './'+ name
+                dir = os.path.dirname(filename)
+                if (os.path.exists(dir) != True):
+                        try:
+                                os.makedirs(dir)
+                        except Exception, e:
+                                pass
+                if (os.path.exists(filename) == True):
+                        os.remove(filename)
+                key.get_contents_to_filename(filename)
+                print( ' moving ' + name + ' from ' + frombucket.name)
+                try:
+                        bucket.delete_key(name)
+                except Exception, e:
+                        pass
+                tokey = Key(bucket)
+                tokey.key = name
+                tokey.set_acl(key.get_acl())
+                tokey.metadata = key.metadata
+                tokey.set_contents_from_filename(filename)
+                os.remove(filename)
 
 
 ### Class to manage the database stores
@@ -86,7 +124,7 @@ class DatabaseService(BaseService):
         return aws.simpledbs(account)
     
     ## copies one domain to another
-    def copy_db(self,from_accountname, from_domain, to_accountname, to_domain=None):
+    def copy_db(self,from_accountname, from_domain, to_accountname, to_domain=None,override=False):
         todomain = to_domain
         if(todomain == None):
             todomain = from_domain
@@ -100,7 +138,11 @@ class DatabaseService(BaseService):
                 toitem = None
                 try:
                         toitem = todb.get_item(name)
-                        print(' item exists already ' + name + ' in ' + domainname)
+                        if (override == True):
+                            todb.delete_item(toitem)
+                            toitem = None
+                        else:
+                            print(' item exists already ' + name + ' in ' + domainname)
                 except Exception, e:
                         pass
                 if (toitem == None):
