@@ -1,74 +1,54 @@
 <%include file="header.html"/>
 
-<div class="span-16">
+<div class="span-23 last">
 <h1 class="fancy">${name} - ${account.name}</h1>
-
-
-
-<h2>running</h2>
-<div id="accordion">
-% for instance in instances:
-        % if (instance.state == 'running'):
-	<h3><a href="/instance/${instance.id}">(${instance.id}) ${instance.public_dns_name}</a></h3>
-	<div>
-		<p>instance id: ${instance.id}</p>
-		<p>external dns: ${instance.public_dns_name}</p>
-                <p>instance state: ${instance.state}</p>
-                <p>instance_type: ${instance.instance_type}</p>
-                <p>internal dns: ${instance.private_dns_name}</p>
-		<p>availability zone: ${instance.placement} </p>
-		<p>groups:
-			<ul>
-			% for group in instance.groups:
-				<li>${group}</li>
-			% endfor
-			</ul>
-		</p>
-                <p>image id: <a href="/ami/${account.name}/${instance.image_id}">${instance.image_id}</a></p>
-                
-	</div>
-        % endif
-% endfor        
 </div>
 
-<h2>stopped</h2>
-<div id="stoppedaccordion">
+
+
+<style type="text/css" media="screen">
+	.dataTables_info { padding-top: 0; }
+	.dataTables_paginate { padding-top: 0; }
+	.css_right { float: right; }
+
+</style>
+
+<div class="span-24 last" style="margin-top: 1em;"> 
+<table class="display" cellpadding="0" cellspacing="0" border="0" id="instancestable" > 
+<thead> 
+	<tr> 
+		<th>public dns</th>
+		<th>instance id</th>
+		<th>instance type</th>
+		<th>availability zone</th>
+		<th>state</th>
+		<th>internal dns</th>
+		<th>internal ip</th>
+		<th>image id</th>
+	</tr>
+</thead>
+<tbody>
 % for instance in instances:
-        % if (instance.state != 'running'):
-	<h3><a href="/instance/${instance.id}">(${instance.id}) ${instance.public_dns_name}</a></h3>
-	<div>
-		<p>instance id: ${instance.id}</p>
-                <p>instance state: ${instance.state}</p>
-                <p>instance_type: ${instance.instance_type}</p>
-                <p>internal dns: ${instance.private_dns_name}</p>
-		<p>availability zone: ${instance.placement} </p>
-		<p>groups:
-			<ul>
-			% for group in instance.groups:
-				<li>${group}</li>
-			% endfor
-			</ul>
-		</p>
-                <p>image id: <a href="/ami/${account.name}/${instance.image_id}">${instance.image_id}</a></p>
-                
-	</div>
-        % endif
-% endfor        
+        <tr>
+		<td>${instance.public_dns_name}</td>
+		<td>${instance.id}</td>
+		<td>${instance.instance_type}</td>
+		<td>${instance.placement}</td>
+		<td>${instance.state}</td>
+		<td>${instance.private_dns_name}</td>
+		<td>${instance.private_ip_address}</td>
+		<td><a href="/ami/${account.name}/${instance.image_id}">${instance.image_id}</a></td>
+	</tr>
+% endfor
+</tbody>
+</table>
 </div>
 
 <script type="text/javascript">
 $(function() {
-        $("#accordion").accordion({ collapsible: true, active: false });
-        $("#stoppedaccordion").accordion({ collapsible: true, active: false });
+        $("#instancestable").dataTable({"bJQueryUI": true, "sPaginationType": "full_numbers" });
 });
 </script>
-</div>
-<div class="span-7 last">
-    <p>&nbsp;</p>
-   <p class="fancy large">Instances part of ${account.name}</p>
-     <%include file="account_nav.tpl" />
-</div>
-
-
+<div class="container">
 <%include file="footer.html"/>
 
