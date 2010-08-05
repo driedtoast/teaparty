@@ -63,7 +63,7 @@ ul.potato-menu-group a {
 .potato-menu a {
 padding:5px 12px 5px 12px;
 /* background: #333; */
-background: #fdad01;
+background: #333;
 color: #fff;
 padding-right:20px;
 }
@@ -78,7 +78,7 @@ background: #666;
 
 .potato-menu-has-horizontal > a {
 /* background: #333; url(/images/icons/fammini/arrow_right.gif) right no-repeat; */
-background: #fdad01;
+background: #333;
 }
 
 .potato-menu-has-vertical > a:hover {
